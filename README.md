@@ -1,4 +1,5 @@
-# SWE350
+# SWE350 (Embedded Systems I)
+# This project displays mock currency data to the LCD Display of the DE10 Standard FPGA Embedded Board by Intel
 
 Download these 4 files and put into a folder
 Create a new project in Eclipse as done in class (with existing code)
