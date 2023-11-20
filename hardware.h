@@ -11,7 +11,13 @@ My Own Work
 #define HARDWARE_H
 // Functions to initialize the hardware needed
 void initializeSwitches();
-void initializeSevenSegDisplay();
 void initializeButtons();
+// 7-Segment-Display functions
+void initializeSevenSegDisplay();
+static int decimal_bcd(int decimal);
+int open_physical (int);
+void * map_physical (int, unsigned int, unsigned int);
+void close_physical (int);
+int unmap_physical (void *, unsigned int);
 
 #endif

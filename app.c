@@ -1,6 +1,6 @@
 /*
 Author: Brian Cook
-Version: Milestone 2.0
+Version: Milestone 3.0
 Course: SWE-350
 Professor: Mark Reha
 Date of Creation: 10/7/2023
@@ -11,6 +11,14 @@ My Own Work
 #include "hardware.h"
 #include <stdbool.h>
 #include <stdio.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/mman.h>
+#include "address_map_arm.h"
+
+
 
 int main() {
   // Initialize Hardware Implementation
@@ -23,10 +31,9 @@ int main() {
   Currency currencies[] = {
       // One price at initialization, then upon refresh price is updated by
       // slight deviation
-      {"Bitcoin", 50000.0},
-      {"Ethereum", 4000.0},
-      {"Litecoin", 200.0},
-
+      {"Bitcoin", 50000},
+      {"Ethereum", 4000},
+      {"Litecoin", 200},
   };
   // For now just 3 currencies,
   // But to dynamically add or remove currencies from the viewable list, we need

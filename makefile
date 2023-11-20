@@ -1,43 +1,22 @@
-################################################################################
-# Automatically-generated file. Do not edit!
-################################################################################
+#
+TARGET = milestone_3
+ALT_DEVICE_FAMILY ?= soc_cv_av
+SOCEDS_ROOT ?= $(SOCEDS_DEST_ROOT)
+HWLIBS_ROOT = $(SOCEDS_ROOT)/ip/altera/hps/altera_hps/hwlib
+CROSS_COMPILE = arm-linux-gnueabihf-
+CFLAGS = -g -Wall   -D$(ALT_DEVICE_FAMILY) -I$(HWLIBS_ROOT)/include/$(ALT_DEVICE_FAMILY)   -I$(HWLIBS_ROOT)/include/  -std=c99
+LDFLAGS =  -g -Wall 
+CC = $(CROSS_COMPILE)gcc
+ARCH= arm
 
--include ../makefile.init
+build: $(TARGET)
 
-RM := clean
+$(TARGET): app.o hardware.o
+	$(CC) $(LDFLAGS)   $^ -o $@ 
 
-# All of the sources participating in the build are defined here
--include sources.mk
--include src/subdir.mk
--include subdir.mk
--include objects.mk
+%.o : %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-ifneq ($(MAKECMDGOALS),clean)
-ifneq ($(strip $(C_DEPS)),)
--include $(C_DEPS)
-endif
-endif
-
--include ../makefile.defs
-
-# Add inputs and outputs from these tool invocations to the build variables 
-
-# All Target
-all: Milestone
-
-# Tool invocations
-Milestone: $(OBJS) $(USER_OBJS)
-	@echo 'Building target: $@'
-	@echo 'Invoking: GCC C Linker 4.8.3 [arm-linux-gnueabihf]'
-	arm-linux-gnueabihf-gcc.exe  -o "Milestone" $(OBJS) $(USER_OBJS) $(LIBS)
-	@echo 'Finished building target: $@'
-	@echo ' '
-
-# Other Targets
+.PHONY: clean
 clean:
-	-$(RM) $(EXECUTABLES) $(OBJS) $(C_DEPS) Milestone 
-	-@echo ' '
-
-.PHONY: all clean dependents
-
--include ../makefile.targets
+	rm -f $(TARGET) *.a *.o *~
