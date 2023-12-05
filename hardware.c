@@ -18,18 +18,97 @@ My Own Work
 #include <sys/mman.h>
 #include "address_map_arm.h"
 
+
+
 void initializeSwitches()
 {
   // Initialize Switches
-  // Stubbed out for demonstration due to bugs:
+
+  int fd = -1;
+  void *LW_virtual;
+
+  // Open physical memory
+  if ((fd = open_physical(fd)) == -1)
+  {
+    printf("Error: unable to open /dev/mem for switches\n");
+    return;
+  }
+
+  // Map memory for switch access
+  if ((LW_virtual = map_physical(fd, LW_BRIDGE_BASE, LW_BRIDGE_SPAN)) == NULL)
+  {
+    printf("Error: unable to map physical memory for switches\n");
+    close_physical(fd);
+    return;
+  }
+
+  // Get the switch address
+  volatile unsigned int *SWITCH_ptr = (volatile unsigned int *)(LW_virtual + SW_BASE);
+
+  // Read switch state
+  unsigned int switchState = *SWITCH_ptr;
+
+  // Respond to switch state
+  for (int i = 0; i < 10; ++i) { // Assuming 10 switches for this example
+    if (switchState & (1 << i)) {
+      printf("Switch %d is ON\n", i);
+    } else {
+      printf("Switch %d is OFF\n", i);
+    }
+  }
+
+
   printf("Switches responded and initialized...\n");
+
+  // Unmap and close physical memory
+  unmap_physical(LW_virtual, LW_BRIDGE_SPAN);
+  close_physical(fd);
+}
+/*
+* Handle switching the currency to be displayed
+* takes in the list of currencies, number of currencies, and the currency selected currency
+*/
+void switchDisplayedCurrency(Currency *currencies, int numCurrencies, int *selectedCurrency)
+{
+  int fd = -1;
+  void *LW_virtual;
+  volatile unsigned int *SWITCH_ptr; // pointer to switches
+  unsigned int switchState; // temp var to hold state of the switches
+
+  // Open the physical memory file for reading switch states
+  if ((fd = open_physical(fd)) == -1) {
+    printf("Error: unable to open /dev/mem for switches\n");
+    return;
+  }
+  // Map the physical memory for switches into virtual memory
+  if ((LW_virtual = map_physical(fd, LW_BRIDGE_BASE, LW_BRIDGE_SPAN)) == NULL) {
+    printf("Error: unable to map physical memory for switches\n");
+    close_physical(fd);
+    return;
+  }
+  // Find the address of the switch and read the state
+  SWITCH_ptr = (volatile unsigned int *)(LW_virtual + SW_BASE);
+  // store in switchState
+  switchState = *SWITCH_ptr;
+  // Go through the switches to check if a switch corresponding with a currency
+  // is switched to the high (ON) state and make it the new selected currency
+  for (int i = 0; i < numCurrencies; ++i) {
+    if (switchState & (1 << i)) {
+
+      *selectedCurrency = i;
+      // notify user of the currency switch
+      printf("Currency switched to: %s\n", currencies[*selectedCurrency].name);
+      // exit when we switch to the desired currency
+      break;
+    }
+  }
+
+  // Unmap and close physical memory
+  unmap_physical(LW_virtual, LW_BRIDGE_SPAN);
+  close_physical(fd);
 }
 
-void initializeButtons()
-{
-  // Stubbed out for demonstration due to bugs
-  printf("Buttons responded and initialized...\n");
-}
+
 /*
   Handles the initilization of our 7-segment display.
 */
@@ -130,19 +209,6 @@ void displayCurrencyPrice(Currency currency)
   close_physical(fd);
 }
 
-// Later implementing a constant refresh to listen for button press
-int buttonPress()
-{
-  // Might call refreshCurrencyPrice() from here if able
-  return 0;
-}
-
-// Check if a certain switch is high state or low state
-int isSwitchToggled()
-{
-  // Check if the switch is high/low
-  return 0;
-}
 
 /*
  * Called when refresh button on hardware is pressed

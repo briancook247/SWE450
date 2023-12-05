@@ -1,5 +1,8 @@
 {
     "files.associations": {
-        "string.h": "c"
+        "string.h": "c",
+        "stdbool.h": "c",
+        "lcd_lib.h": "c",
+        "terasic_os_includes.h": "c"
     }
 }
