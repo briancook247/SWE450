@@ -18,7 +18,20 @@ My Own Work
 #include <sys/mman.h>
 #include "address_map_arm.h"
 
+// GPIO Bit Structure, 6 nibbles set up for Hex0 – Hex 5 BCD Decoder Inputs
+typedef struct {
+    unsigned int gpio0 : 4;  // lsb
+    unsigned int gpio1 : 4;
+    unsigned int gpio2 : 4;
+    unsigned int gpio3 : 4;
+    unsigned int gpio4 : 4;
+    unsigned int gpio5 : 4;
+    unsigned int gpiou : 11; // msb
+} GpioRegister;
 
+// virtual address pointer to JP1 Expansion Port
+volatile unsigned int *JP1_ptr;
+GpioRegister* gpioRegister;
 
 void initializeSwitches()
 {
@@ -114,101 +127,75 @@ void switchDisplayedCurrency(Currency *currencies, int numCurrencies, int *selec
 */
 void initializeSevenSegDisplay()
 {
-  // Initialize variables for our 7-segment-display
-  int fd = -1;
-  // Initialize pointer for the lightweight bridge virtual address
-  void *LW_virtual;
-  // open physical memory
-  if ((fd = open_physical(fd)) == -1)
-  {
-    printf("Error: unable to open /dev/mem for 7-segment display\n");
-    return;
-  }
-  // map memory to the 7-seg-display
-  if ((LW_virtual = map_physical(fd, LW_BRIDGE_BASE, LW_BRIDGE_SPAN)) == NULL)
-  {
-    printf("Error: unable to map physical memory for 7-segment display\n");
+    int fd = -1;
+    void *LW_virtual;
+
+    if ((fd = open_physical(fd)) == -1)
+    {
+        printf("Error: unable to open /dev/mem for 7-segment display\n");
+        return;
+    }
+
+    if ((LW_virtual = map_physical(fd, LW_BRIDGE_BASE, LW_BRIDGE_SPAN)) == NULL)
+    {
+        printf("Error: unable to map physical memory for 7-segment display\n");
+        close_physical(fd);
+        return;
+    }
+
+    JP1_ptr = (unsigned int *)(LW_virtual + JP1_BASE);
+    // Set all GPIO to output
+    *(JP1_ptr + 1) = 0x00FFFFFF;
+    // Set the gpioRegister pointer
+    gpioRegister = (GpioRegister*)(JP1_ptr + 0); 
+
+    printf("7-segment display initialized...\n");
+
+    unmap_physical(LW_virtual, LW_BRIDGE_SPAN);
     close_physical(fd);
-    return;
-  }
-  // print to console to show us it worked
-  printf("Display responded and initialized...\n");
-  // Unmap and close for our 7-segment-display
-  unmap_physical(LW_virtual, LW_BRIDGE_SPAN);
-  close_physical(fd);
 }
+
 /*
   Handles the display of the prices within the program to the 7-segment display
   needs currency passed in to work with
 */
 void displayCurrencyPrice(Currency currency)
 {
-  volatile unsigned int *HEX3_HEX0_ptr, *HEX5_HEX4_ptr;
-  int fd = -1;
-  void *LW_virtual;
+    int fd = open_physical(-1);
+    if (fd == -1) return;
 
-  if ((fd = open_physical(fd)) == -1)
-  {
-    printf("Error: unable to open /dev/mem for display\n");
-    return;
-  }
-  if ((LW_virtual = map_physical(fd, LW_BRIDGE_BASE, LW_BRIDGE_SPAN)) == NULL)
-  {
-    printf("Error: unable to map physical memory for display\n");
+    void *LW_virtual = map_physical(fd, LW_BRIDGE_BASE, LW_BRIDGE_SPAN);
+    if (LW_virtual == NULL) {
+        close_physical(fd);
+        return;
+    }
+
+    JP1_ptr = (unsigned int *)(LW_virtual + JP1_BASE);
+    // Set the gpioRegister pointer
+    gpioRegister = (GpioRegister*)(JP1_ptr + 0); 
+
+    int price = (int)(currency.price);
+
+    // Store the digits in an array in reverse order
+    int digits[6];
+    for (int i = 0; i < 6; i++) {
+        digits[i] = price % 10;
+        price /= 10;
+    }
+
+    // Assign each digit to the corresponding GPIO bit for the 7-segment display
+    gpioRegister->gpio5 = digits[5];
+    gpioRegister->gpio4 = digits[4];
+    gpioRegister->gpio3 = digits[3];
+    gpioRegister->gpio2 = digits[2];
+    gpioRegister->gpio1 = digits[1];
+    gpioRegister->gpio0 = digits[0];
+
+    printf("Displaying currency: %s, Price: %d\n", currency.name, (int)(currency.price));
+
+    unmap_physical(LW_virtual, LW_BRIDGE_SPAN);
     close_physical(fd);
-    return;
-  }
-  // Documentation has Hex 0-3 and 4-5 pointers, so instead of one pointer we have to split it into 2
-  HEX3_HEX0_ptr = (unsigned int *)(LW_virtual + HEX3_HEX0_BASE); // Pointer for HEX0 to HEX3
-  HEX5_HEX4_ptr = (unsigned int *)(LW_virtual + HEX5_HEX4_BASE); // Pointer for HEX4 and HEX5
-  // Effectively clears all 6 displays
-  *HEX3_HEX0_ptr = 0; // Clear HEX0 to HEX3 displays
-  *HEX5_HEX4_ptr = 0; // Clear HEX4 and HEX5 displays
-  // print price to console
-  printf("Currency: %s, Price: %.2f\n", currency.name, currency.price);
-  // truncate the price so that we don't print decimals to the display (only fits 6 digits)
-  int price = (int)(currency.price); // Convert to integer (truncate decimals)
-  //
-  unsigned int display_value_low = 0;
-  unsigned int display_value_high = 0;
-
-  // Handle lower 4 digits (HEX3 to HEX0)
-  for (int i = 0; i < 4; ++i)
-  {
-    int digit = price % 10;
-    // stores our bcd value
-    int bcd_digit = decimal_bcd(digit);
-    // Sequentially creates our final bcd digit by shifting the bits
-    // to their appropriate spot
-    bcd_digit = bcd_digit << (i * 8);
-    // combines the current digit with the shifted digit to build our final number
-    display_value_low = display_value_low | bcd_digit;
-
-    // Replace compound division assignment with separate statements
-    price = price / 10;
-  }
-
-  // Handle upper 2 digits (HEX5 to HEX4)
-  for (int i = 0; i < 2; ++i)
-  {
-    int digit = price % 10;
-    // Replace compound bitwise OR assignment with separate statements
-    int bcd_digit = decimal_bcd(digit);
-    bcd_digit = bcd_digit << (i * 8);
-    display_value_high = display_value_high | bcd_digit;
-
-    // Replace compound division assignment with separate statements
-    price = price / 10;
-  }
-  // Update HEX0 to HEX3 displays (right 4)
-  *HEX3_HEX0_ptr = display_value_low;  
-  // Update HEX4 and HEX5 displays (left 2)
-  *HEX5_HEX4_ptr = display_value_high; 
-
-  unmap_physical(LW_virtual, LW_BRIDGE_SPAN);
-  close_physical(fd);
 }
-
 
 /*
  * Called when refresh button on hardware is pressed
@@ -219,16 +206,6 @@ void refreshCurrencyPrice(Currency *currency)
 {
   // Simulate real data by refreshing the currency price slightly
   currency->price = currency->price + ((rand() % (int)(currency->price / 10)) - 100);
-}
-
-/*
- * Input for changing currency is through switches (1-3) currently
- * Call a switch read in here to get the state of the switches
- */
-void changeDisplayedCurrency(Currency *currency)
-{
-  // Change the currently displayed currency
-  // Later will check switches to determine which currency to switch to
 }
 
 // Open mem  to give access to physical addresses

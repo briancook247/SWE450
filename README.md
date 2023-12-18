@@ -8,3 +8,12 @@ clean and build project
 move the build file onto board in root directory 
 chmod 777 fileName
 ./fileName to run board
+
+
+INSTRUCTIONS TO RUN:
+Rightmost 3 switches:
+
+Flip ONLY rightmost switch to display Bitcoin (BTC):
+Flip 2nd to rightmost switch to display Ethereum (ETH):
+Flip 3rd to rightmost switch to display Litecoin (LTC):
+
