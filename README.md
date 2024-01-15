@@ -1,4 +1,4 @@
-# SWE350 (Embedded Systems I)
+# SWE450 (Embedded Systems II)
 # This project displays mock currency data to the LCD display of the DE10 Standard FPGA Embedded Board by Intel
 
 Download these 4 files and put into a folder
