@@ -1,5 +1,5 @@
 Analysis & Synthesis report for DE10_Standard_Computer
-Sun Dec 17 20:42:30 2023
+Mon Feb 26 17:24:12 2024
 Quartus Prime Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition
 
 
@@ -37,7 +37,7 @@ https://fpgasoftware.intel.com/eula.
 +------------------------------------------------------------------------------+
 ; Analysis & Synthesis Summary                                                 ;
 +-----------------------------+------------------------------------------------+
-; Analysis & Synthesis Status ; Failed - Sun Dec 17 20:42:30 2023              ;
+; Analysis & Synthesis Status ; Failed - Mon Feb 26 17:24:12 2024              ;
 ; Quartus Prime Version       ; 22.1std.2 Build 922 07/20/2023 SC Lite Edition ;
 ; Revision Name               ; DE10_Standard_Computer                         ;
 ; Top-level Entity Name       ; DE10_Standard_Computer                         ;
@@ -161,29 +161,26 @@ https://fpgasoftware.intel.com/eula.
 Info: *******************************************************************
 Info: Running Quartus Prime Analysis & Synthesis
     Info: Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition
-    Info: Processing started: Sun Dec 17 20:42:23 2023
+    Info: Processing started: Mon Feb 26 17:24:04 2024
 Info: Command: quartus_map --read_settings_files=on --write_settings_files=off DE10_Standard_Computer -c DE10_Standard_Computer
 Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
 Info (20030): Parallel compilation is enabled and will use 6 of the 6 processors detected
-Error (10500): VHDL syntax error at DE10_Standard_Computer.vhd(4) near text "/";  expecting "is" File: C:/Users/Brian/Documents/GitHub/SWE350/fpga/DE10_Standard_Computer.vhd Line: 4
-Error (10500): VHDL syntax error at DE10_Standard_Computer.vhd(7) near text # File: C:/Users/Brian/Documents/GitHub/SWE350/fpga/DE10_Standard_Computer.vhd Line: 7
-Error (10500): VHDL syntax error at DE10_Standard_Computer.vhd(203) near text ~ File: C:/Users/Brian/Documents/GitHub/SWE350/fpga/DE10_Standard_Computer.vhd Line: 203
-Error (10500): VHDL syntax error at DE10_Standard_Computer.vhd(204) near text ~ File: C:/Users/Brian/Documents/GitHub/SWE350/fpga/DE10_Standard_Computer.vhd Line: 204
-Error (10500): VHDL syntax error at DE10_Standard_Computer.vhd(205) near text ~ File: C:/Users/Brian/Documents/GitHub/SWE350/fpga/DE10_Standard_Computer.vhd Line: 205
-Error (10500): VHDL syntax error at DE10_Standard_Computer.vhd(206) near text ~ File: C:/Users/Brian/Documents/GitHub/SWE350/fpga/DE10_Standard_Computer.vhd Line: 206
-Error (10500): VHDL syntax error at DE10_Standard_Computer.vhd(207) near text ~ File: C:/Users/Brian/Documents/GitHub/SWE350/fpga/DE10_Standard_Computer.vhd Line: 207
-Error (10500): VHDL syntax error at DE10_Standard_Computer.vhd(208) near text ~ File: C:/Users/Brian/Documents/GitHub/SWE350/fpga/DE10_Standard_Computer.vhd Line: 208
-Error (10500): VHDL syntax error at DE10_Standard_Computer.vhd(249) near text ~ File: C:/Users/Brian/Documents/GitHub/SWE350/fpga/DE10_Standard_Computer.vhd Line: 249
-Error (10500): VHDL syntax error at DE10_Standard_Computer.vhd(298) near text { File: C:/Users/Brian/Documents/GitHub/SWE350/fpga/DE10_Standard_Computer.vhd Line: 298
-Error (10500): VHDL syntax error at DE10_Standard_Computer.vhd(298) near text } File: C:/Users/Brian/Documents/GitHub/SWE350/fpga/DE10_Standard_Computer.vhd Line: 298
-Info (12021): Found 0 design units, including 0 entities, in source file de10_standard_computer.vhd
 Info (12021): Found 2 design units, including 1 entities, in source file bcd_7segment.vhd
-    Info (12022): Found design unit 1: bcd_7segment-Behavioral File: C:/Users/Brian/Documents/GitHub/SWE350/fpga/bcd_7segment.vhd Line: 11
-    Info (12023): Found entity 1: bcd_7segment File: C:/Users/Brian/Documents/GitHub/SWE350/fpga/bcd_7segment.vhd Line: 4
-Error: Quartus Prime Analysis & Synthesis was unsuccessful. 11 errors, 1 warning
-    Error: Peak virtual memory: 4865 megabytes
-    Error: Processing ended: Sun Dec 17 20:42:30 2023
-    Error: Elapsed time: 00:00:07
+    Info (12022): Found design unit 1: bcd_7segment-Behavioral File: C:/Users/Brian/Documents/GitHub/450s/SWE450/fpga/bcd_7segment.vhd Line: 11
+    Info (12023): Found entity 1: bcd_7segment File: C:/Users/Brian/Documents/GitHub/450s/SWE450/fpga/bcd_7segment.vhd Line: 4
+Info (12021): Found 1 design units, including 1 entities, in source file de10_standard_computer.v
+    Info (12023): Found entity 1: DE10_Standard_Computer File: C:/Users/Brian/Documents/GitHub/450s/SWE450/fpga/DE10_Standard_Computer.v Line: 3
+Info (12127): Elaborating entity "DE10_Standard_Computer" for the top level hierarchy
+Info (12128): Elaborating entity "bcd_7segment" for hierarchy "bcd_7segment:decoder_1" File: C:/Users/Brian/Documents/GitHub/450s/SWE450/fpga/DE10_Standard_Computer.v Line: 412
+Warning (10542): VHDL Variable Declaration warning at bcd_7segment.vhd(14): used initial value expression for variable "A" because variable was never assigned a value File: C:/Users/Brian/Documents/GitHub/450s/SWE450/fpga/bcd_7segment.vhd Line: 14
+Warning (10542): VHDL Variable Declaration warning at bcd_7segment.vhd(15): used initial value expression for variable "B" because variable was never assigned a value File: C:/Users/Brian/Documents/GitHub/450s/SWE450/fpga/bcd_7segment.vhd Line: 15
+Warning (10542): VHDL Variable Declaration warning at bcd_7segment.vhd(16): used initial value expression for variable "C" because variable was never assigned a value File: C:/Users/Brian/Documents/GitHub/450s/SWE450/fpga/bcd_7segment.vhd Line: 16
+Warning (10542): VHDL Variable Declaration warning at bcd_7segment.vhd(17): used initial value expression for variable "D" because variable was never assigned a value File: C:/Users/Brian/Documents/GitHub/450s/SWE450/fpga/bcd_7segment.vhd Line: 17
+Error (12006): Node instance "The_System" instantiates undefined entity "Computer_System". Ensure that required library paths are specified correctly, define the specified entity, or change the instantiation. If this entity represents Intel FPGA or third-party IP, generate the synthesis files for the IP. File: C:/Users/Brian/Documents/GitHub/450s/SWE450/fpga/DE10_Standard_Computer.v Line: 408
+Error: Quartus Prime Analysis & Synthesis was unsuccessful. 1 error, 5 warnings
+    Error: Peak virtual memory: 4853 megabytes
+    Error: Processing ended: Mon Feb 26 17:24:12 2024
+    Error: Elapsed time: 00:00:08
     Error: Total CPU time (on all processors): 00:00:13
 
 

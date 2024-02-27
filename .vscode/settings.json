@@ -3,6 +3,11 @@
         "string.h": "c",
         "stdbool.h": "c",
         "lcd_lib.h": "c",
-        "terasic_os_includes.h": "c"
+        "terasic_os_includes.h": "c",
+        "address_map_arm.h": "c",
+        "stdlib.h": "c",
+        "fcntl.h": "c",
+        "stdio.h": "c",
+        "lcd_hw.h": "c"
     }
 }

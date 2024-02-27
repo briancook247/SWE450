@@ -1,5 +1,5 @@
 Flow report for DE10_Standard_Computer
-Sun Dec 17 20:42:30 2023
+Mon Feb 26 17:24:12 2024
 Quartus Prime Version 22.1std.2 Build 922 07/20/2023 SC Lite Edition
 
 
@@ -41,7 +41,7 @@ https://fpgasoftware.intel.com/eula.
 +------------------------------------------------------------------------------+
 ; Flow Summary                                                                 ;
 +-----------------------------+------------------------------------------------+
-; Flow Status                 ; Flow Failed - Sun Dec 17 20:42:30 2023         ;
+; Flow Status                 ; Flow Failed - Mon Feb 26 17:24:12 2024         ;
 ; Quartus Prime Version       ; 22.1std.2 Build 922 07/20/2023 SC Lite Edition ;
 ; Revision Name               ; DE10_Standard_Computer                         ;
 ; Top-level Entity Name       ; DE10_Standard_Computer                         ;
@@ -63,7 +63,7 @@ https://fpgasoftware.intel.com/eula.
 +-------------------+------------------------+
 ; Option            ; Setting                ;
 +-------------------+------------------------+
-; Start date & time ; 12/17/2023 20:42:23    ;
+; Start date & time ; 02/26/2024 17:24:05    ;
 ; Main task         ; Compilation            ;
 ; Revision Name     ; DE10_Standard_Computer ;
 +-------------------+------------------------+
@@ -74,7 +74,7 @@ https://fpgasoftware.intel.com/eula.
 +-------------------------------------+----------------------------------------+---------------+-------------+-----------------------------------+
 ; Assignment Name                     ; Value                                  ; Default Value ; Entity Name ; Section Id                        ;
 +-------------------------------------+----------------------------------------+---------------+-------------+-----------------------------------+
-; COMPILER_SIGNATURE_ID               ; 929340637198.170287094320508           ; --            ; --          ; --                                ;
+; COMPILER_SIGNATURE_ID               ; 929340637198.170899344422208           ; --            ; --          ; --                                ;
 ; EDA_GENERATE_FUNCTIONAL_NETLIST     ; Off                                    ; --            ; --          ; eda_board_design_timing           ;
 ; EDA_GENERATE_FUNCTIONAL_NETLIST     ; Off                                    ; --            ; --          ; eda_board_design_boundary_scan    ;
 ; EDA_GENERATE_FUNCTIONAL_NETLIST     ; Off                                    ; --            ; --          ; eda_board_design_signal_integrity ;
@@ -96,8 +96,8 @@ https://fpgasoftware.intel.com/eula.
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 ; Module Name          ; Elapsed Time ; Average Processors Used ; Peak Virtual Memory ; Total CPU Time (on all processors) ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
-; Analysis & Synthesis ; 00:00:07     ; 1.0                     ; 4865 MB             ; 00:00:13                           ;
-; Total                ; 00:00:07     ; --                      ; --                  ; 00:00:13                           ;
+; Analysis & Synthesis ; 00:00:08     ; 1.0                     ; 4853 MB             ; 00:00:13                           ;
+; Total                ; 00:00:08     ; --                      ; --                  ; 00:00:13                           ;
 +----------------------+--------------+-------------------------+---------------------+------------------------------------+
 
 
